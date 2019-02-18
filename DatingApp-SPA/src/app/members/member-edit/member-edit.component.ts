@@ -14,6 +14,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
   user: User;
+  photoUrl: string;
+
   // this is used so people can't close the browser without getting message about unsaved changes.
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
@@ -29,6 +31,7 @@ export class MemberEditComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.user = data.user;
     });
+    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
   updateUser() {
@@ -40,6 +43,10 @@ export class MemberEditComponent implements OnInit {
     this.alertify.success('Profile Updated Successfully');
     this.editForm.reset(this.user);
 
+  }
+
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
   }
 
 }
